@@ -1,7 +1,8 @@
 import { LoginForm } from "@/components/LoginForm"
 import { BookOpen } from "lucide-react"
 
-export default function LoginPage() {
+export default async function LoginPage() {
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-white">
       <div className="w-full max-w-sm">

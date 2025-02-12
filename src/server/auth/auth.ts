@@ -1,15 +1,13 @@
+"use server";
 import { signinMock } from "@/services/signin";
 import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
+import { redirect } from "next/navigation";
 
-export async function POST(request: NextRequest) {
-    const body = await request.json();
-    const { email, password } = body;
-
+export const signinAction = async (email: string, password: string) => {
     const logged = await signinMock(email, password);
 
     if (!logged) {
-        return NextResponse.json({ success: false });
+        return false;
     }
 
     // Set cookies
@@ -22,5 +20,14 @@ export async function POST(request: NextRequest) {
     };
     cookiesHandler.set("username", JSON.stringify(username));
 
-    return NextResponse.json({ success: true });
-}
+    redirect("/dashboard");
+};
+
+export const signoutAction = async () => {
+    // Delete cookies
+    const cookiesHandler = await cookies();
+    cookiesHandler.delete("isLogged");
+    cookiesHandler.delete("username");
+
+    redirect("/");
+};

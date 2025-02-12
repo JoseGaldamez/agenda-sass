@@ -1,15 +1,16 @@
 "use client"
 
 import { useState } from "react"
+import { signinAction } from "@/server/auth/auth"
+
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Loader2 } from "lucide-react"
-import { useRouter } from "next/navigation"
+import { toast } from "@/hooks/use-toast"
 
 export function LoginForm() {
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false)
-  const [errorText, setErrorText] = useState("");
+
+  const [isLoading, setIsLoading] = useState(false);
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -19,25 +20,15 @@ export function LoginForm() {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
-    const result = await fetch("/api/signin", {
-      method: "POST",
-      body: JSON.stringify({ email, password }),
-      headers: {
-        "Content-Type": "application/json"
-      }
+    await signinAction(email, password);
+
+    toast({
+      title: "Error",
+      description: "Usuario o contraseña incorrectos",
+      variant: "destructive",
     })
 
-    const data = await result.json();
-
-    if (data.success === false) {
-      setErrorText("Correo electrónico o contraseña incorrectos");
-      setIsLoading(false);
-    } else {
-      setErrorText("");
-      setIsLoading(false);
-      router.push("/dashboard");
-    }
-
+    setIsLoading(false);
   }
 
   return (
@@ -47,11 +38,7 @@ export function LoginForm() {
       <Button className="w-full bg-gray-800 hover:bg-gray-700 text-white" type="submit" disabled={isLoading}>
         {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Iniciar sesión"}
       </Button>
-      {
-        (errorText !== "") && (
-          <p className="text-red-500 text-sm">{errorText}</p>
-        )
-      }
+
     </form>
   )
 }

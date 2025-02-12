@@ -11,7 +11,7 @@ import {
     DropdownMenuShortcut,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { useRouter } from "next/navigation";
+import { signoutAction } from "@/server/auth/auth";
 
 interface UserNavProps {
     name: string;
@@ -19,8 +19,6 @@ interface UserNavProps {
 }
 
 export function UserNav({ name, email }: UserNavProps) {
-
-    const router = useRouter();
 
     return (
         <DropdownMenu>
@@ -54,16 +52,7 @@ export function UserNav({ name, email }: UserNavProps) {
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={async () => {
-                    const result = await fetch("/api/signout", {
-                        method: "POST"
-                    });
-
-                    const data = await result.json();
-                    if (data.success) {
-                        router.push("/");
-                    }
-                }}>
+                <DropdownMenuItem onClick={signoutAction}>
                     Cerrar sesión
                     <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
                 </DropdownMenuItem>

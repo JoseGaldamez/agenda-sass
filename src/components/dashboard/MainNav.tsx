@@ -11,12 +11,12 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
 
     return (
         <nav className={cn("flex items-center space-x-4 lg:space-x-6", className)} {...props}>
-            <Link href="/">
+            <Link href="/dashboard">
                 <Button
                     variant="ghost"
                     className={cn(
                         "text-sm font-medium transition-colors hover:text-primary",
-                        pathname === "/" ? "text-primary" : "text-muted-foreground",
+                        pathname === "/dashboard" ? "text-primary" : "text-muted-foreground",
                     )}
                 >
                     Dashboard

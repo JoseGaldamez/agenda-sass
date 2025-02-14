@@ -11,14 +11,15 @@ import {
     DropdownMenuShortcut,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { signoutAction } from "@/server/auth/auth";
+import { logout } from "@/server/auth/login/actions";
+import Link from "next/link";
 
 interface UserNavProps {
-    name: string;
     email: string;
+    name: string;
 }
 
-export function UserNav({ name, email }: UserNavProps) {
+export function UserNav({ email, name }: UserNavProps) {
 
     return (
         <DropdownMenu>
@@ -36,23 +37,25 @@ export function UserNav({ name, email }: UserNavProps) {
             <DropdownMenuContent className="w-56" align="end" forceMount>
                 <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
-                        <p className="text-sm font-medium leading-none">{name}</p>
+                        <p className="text-sm">{name}</p>
                         <p className="text-xs leading-none text-muted-foreground">{email}</p>
                     </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                        Perfil
-                        <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-                    </DropdownMenuItem>
+                    <Link href={"/dashboard/profile"}>
+                        <DropdownMenuItem>
+                            Perfil
+                            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                        </DropdownMenuItem>
+                    </Link>
                     <DropdownMenuItem>
                         Configuración
                         <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={signoutAction}>
+                <DropdownMenuItem onClick={logout}>
                     Cerrar sesión
                     <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
                 </DropdownMenuItem>

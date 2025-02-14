@@ -6,9 +6,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Loader2 } from "lucide-react"
 import { toast } from "@/hooks/use-toast"
-import { login } from "@/server/auth/login/actions"
+import { createClient } from "@/utils/supabase/client"
 
-export function LoginForm() {
+export function RequestResetPasswordForm() {
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -18,25 +18,29 @@ export function LoginForm() {
 
     const formData = new FormData(event.currentTarget);
     const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
 
-    const error = await login(email, password);
+    const supabase = await createClient();
+    await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    })
 
     toast({
-      title: "Error",
-      description: error.message,
-      variant: "destructive",
+      title: "Email enviado",
+      description: "Se ha enviado un email con instrucciones para restablecer la contraseña",
     })
 
     setIsLoading(false);
+
   }
 
   return (
     <form onSubmit={onSubmit} className="space-y-4">
-      <Input id="email" name="email" placeholder="Correo electrónico" required type="email" className="w-full" />
-      <Input id="password" name="password" placeholder="Contraseña" required type="password" className="w-full" />
+
+      <Input id="email" name="email" placeholder="Email" required
+        type="email" className="w-full" />
+
       <Button className="w-full bg-gray-800 hover:bg-gray-700 text-white" type="submit" disabled={isLoading}>
-        {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Iniciar sesión"}
+        {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Solicitar email de restablecimiento"}
       </Button>
 
     </form>

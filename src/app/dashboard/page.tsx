@@ -7,12 +7,15 @@ import { SearchNav } from "@/components/dashboard/SearchNav"
 import { UserNav } from "@/components/dashboard/UserNav"
 import { Overview } from "@/components/dashboard/Overview"
 import { RecentContacts } from "@/components/dashboard/RecentContacts"
-import { cookies } from "next/headers"
+import { getCurrentUser } from "@/server/auth/login/actions"
+
 
 export default async function DashboardPage() {
-    const cookiesHandler = await cookies();
-    const username = cookiesHandler.get("username");
-    const usernameValue = JSON.parse(username?.value || "{}");
+
+    // obtener mi usuario
+    const user = await getCurrentUser();
+    const displayName = user?.user_metadata.display_name as string ?? "Usuario";
+
 
     return (
         <div className="hidden flex-col md:flex">
@@ -21,7 +24,7 @@ export default async function DashboardPage() {
                     <MainNav className="mx-6" />
                     <div className="ml-auto flex items-center space-x-4">
                         <SearchNav />
-                        <UserNav name={usernameValue.name} email={usernameValue.email} />
+                        <UserNav name={displayName} email={user?.email ?? "user@example.com"} />
                     </div>
                 </div>
             </div>

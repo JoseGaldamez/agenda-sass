@@ -22,39 +22,29 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
                     Dashboard
                 </Button>
             </Link>
-            <Link href="/contacts">
+            <Link href="/dashboard/contacts">
                 <Button
                     variant="ghost"
                     className={cn(
                         "text-sm font-medium transition-colors hover:text-primary",
-                        pathname === "/contacts" ? "text-primary" : "text-muted-foreground",
+                        pathname === "/dashboard/contacts" ? "text-primary underline" : "text-muted-foreground",
                     )}
                 >
                     Contactos
                 </Button>
             </Link>
-            <Link href="/groups">
+            <Link href="/dashboard/favorites">
                 <Button
                     variant="ghost"
                     className={cn(
                         "text-sm font-medium transition-colors hover:text-primary",
-                        pathname === "/groups" ? "text-primary" : "text-muted-foreground",
+                        pathname === "/dashboard/favorites" ? "text-primary underline" : "text-muted-foreground",
                     )}
                 >
-                    Grupos
+                    Favoritos
                 </Button>
             </Link>
-            <Link href="/settings">
-                <Button
-                    variant="ghost"
-                    className={cn(
-                        "text-sm font-medium transition-colors hover:text-primary",
-                        pathname === "/settings" ? "text-primary" : "text-muted-foreground",
-                    )}
-                >
-                    Configuración
-                </Button>
-            </Link>
+
         </nav>
     )
 }
